@@ -1,0 +1,39 @@
+# https://help.github.com/en/articles/metadata-syntax-for-github-actions
+
+name: 'github-action'
+description: 'Will soon be a way to run mule-lint.'
+author: 'cgorshing'
+
+branding:
+  icon: 'box'
+  color: 'green'
+inputs:
+  rules-path:
+    description: 'Path of the rules file'
+    required: true
+  dictionary-path:
+    description: 'Path of the dictionary file'
+    required: true
+  source-directory:
+    description: 'Directory of where the source files are at'
+    default: 'src/main/app'
+  output-file:
+    description: 'The filename for the output'
+    default: 'results.json'
+  exclude-pattern:
+    description: 'Exclude pattern'
+    default: '**/foo/*.xml'
+  github-token:
+    description: 'Github Token'
+outputs:
+  time: # id of output
+    description: 'The time we greeted you'
+runs:
+  using: 'docker'
+  image: docker://cgorshing/mule-lint-github-action:latest
+  args:
+    - '--rules ${{ inputs.rules-path }}'
+    - '--dictionary ${{ inputs.dictionary-path }}'
+    - '--sources ${{ inputs.source-directory }}'
+    - '--output ${{ inputs.output-file }}'
+    - '--exclude ${{ inputs.exclude-pattern }}'
